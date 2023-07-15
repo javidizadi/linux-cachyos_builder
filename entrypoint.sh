@@ -1,15 +1,20 @@
 #!/bin/bash
 commit_hash="234a03d7790061aff8aed5a12850899ea6f780a7"
-repo=`printenv REPO`
+repo=$(printenv REPO)
 cd /home/linux-cachyos_builder
 git clone https://aur.archlinux.org/linux-cachyos.git &&
 cd linux-cachyos
 echo "Checkout specified commit..."
 git checkout $commit_hash &&
 echo "Compiling kernel..."
-# create fake file for testing
-echo "this is a test" > ./test.pkg.tar.zst
-echo "Logining in to GitHub..."
+env _processor_opt="sandybridge" \
+    _disable_debug=y \
+    _NUMAdisable=y \
+    _nr_cpus=4 \
+    _use_auto_optimization='' \
+    makepkg --nocolor --noconfirm --noprogressbar --needed --syncdeps &&
+    echo "Logining in to GitHub..."
+echo "file(s) size : ${du -sh ./*.pkg.tar.zst}"
 printenv GITHUB_KEY | gh auth login --with-token
 #version=`git log --format=%B -n 1 $commit_hash | awk -F '-' 'NR==1{print "v"$1}'`
 version='6.4.3-1'
