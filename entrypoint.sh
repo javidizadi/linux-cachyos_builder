@@ -7,7 +7,8 @@ cd linux-cachyos
 echo "Checkout specified commit..."
 git checkout $commit_hash &&
 echo "Compiling kernel..."
-env _processor_opt="sandybridge" \
+env MAKEFLAGS="-s" \ 
+    _processor_opt="sandybridge" \
     _disable_debug=y \
     _NUMAdisable=y \
     _nr_cpus=4 \
