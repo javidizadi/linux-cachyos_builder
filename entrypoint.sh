@@ -7,8 +7,8 @@ cd linux-cachyos
 echo "Checkout specified commit..."
 git checkout $commit_hash &&
 echo "Compiling kernel..."
-#env MAKEFLAGS="-s -j$(nproc)" _localmodcfg=y _subarch=22 makepkg --skippgpcheck &&
-env _processor_opt="sandybridge" _disable_debug=y _NUMAdisable=y _nr_cpus=4 _cc_harder=y _use_auto_optimization='' makepkg
+# create fake file for testing
+touch test.pkg.tar.zst
 echo "Logining in to GitHub..."
 printenv GITHUB_KEY | gh auth login --with-token
 #version=`git log --format=%B -n 1 $commit_hash | awk -F '-' 'NR==1{print "v"$1}'`
