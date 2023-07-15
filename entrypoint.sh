@@ -8,7 +8,7 @@ echo "Checkout specified commit..."
 git checkout $commit_hash &&
 echo "Compiling kernel..."
 # create fake file for testing
-touch test.pkg.tar.zst
+echo "this is a test" > ./test.pkg.tar.zst
 echo "Logining in to GitHub..."
 printenv GITHUB_KEY | gh auth login --with-token
 #version=`git log --format=%B -n 1 $commit_hash | awk -F '-' 'NR==1{print "v"$1}'`
