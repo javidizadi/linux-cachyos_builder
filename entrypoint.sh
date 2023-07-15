@@ -7,13 +7,14 @@ cd linux-cachyos
 echo "Checkout specified commit..."
 git checkout $commit_hash &&
 echo "Compiling kernel..."
-env MAKEFLAGS="-s" \ 
-    _processor_opt="sandybridge" \
+env _processor_opt="sandybridge" \
     _disable_debug=y \
     _NUMAdisable=y \
     _nr_cpus=4 \
     _use_auto_optimization='' \
-    makepkg --nocolor --noconfirm --noprogressbar --needed --syncdeps &&
+    _localmodcfg=y \
+    _cc_harder=y \
+    makepkg &&
     echo "Logining in to GitHub..."
 echo "file(s) size : ${du -sh ./*.pkg.tar.zst}"
 printenv GITHUB_KEY | gh auth login --with-token
