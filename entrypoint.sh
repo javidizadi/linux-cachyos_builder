@@ -18,8 +18,10 @@ env _processor_opt="sandybridge" \
     echo "Logining in to GitHub..."
 echo "file(s) size : ${du -sh ./*.pkg.tar.zst}"
 printenv GITHUB_KEY | gh auth login --with-token
-#version=`git log --format=%B -n 1 $commit_hash | awk -F '-' 'NR==1{print "v"$1}'`
-version='6.4.3-1'
+minor=$(grep _minor PKGBUILD | head -1 | cut -c 8-)
+major=$(grep _major PKGBUILD | head -1 | cut -c 8-)
+pkgrel=$(grep pkgrel PKGBUILD | head -1 | cut -c 8-)
+version="$major.$minor-$pkgrel"
 gh release view "$version" --repo "$repo"
 tag_exists=$?
 if test $tag_exists -eq 0; then
