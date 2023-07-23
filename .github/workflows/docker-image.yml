@@ -1,10 +1,6 @@
-name: Docker Image CI
+name: builder
 
-on:
-  push:
-    branches: ["master"]
-  pull_request:
-    branches: ["master"]
+on: push
 
 jobs:
   build:
@@ -12,8 +8,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Build the Docker image
+
+      - name: create cache directory
+        run: mkdir cache
+
+      - name: using cache
+        uses: actions@cache@v3
+        with:
+          key: ccache
+          path: ./cache
+
+      - name: build Docker image
         run: docker build . --file Dockerfile --tag ${{ github.repository }}:latest
 
-      - name: Run the Docker image
-        run: docker run -i -e GITHUB_KEY=${{ secrets.GITHUB_TOKEN }} -e REPO=${{ github.repository }} ${{ github.repository }}:latest
+      - name: run Docker image
+        run: docker run -i -e GITHUB_KEY=${{ secrets.GITHUB_TOKEN }} -e REPO=${{ github.repository }} -v "$(realpath ./cache)":/home/builder/.cache/ccache  ${{ github.repository }}:latest
