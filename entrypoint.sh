@@ -1,12 +1,7 @@
 #!/bin/bash
 set -e
 export PATH="/usr/lib/ccache/bin:$PATH"
-#sudo chown -hR "${USER}" "${HOME}/.cache/ccache"
 sudo chmod -R a+rw $HOME/.cache/ccache
-ls -ltrh $HOME/.cache
-echo "test" > $HOME/.cache/ccache/test
-cat $HOME/.cache/ccache/test
-exit 0
 cd $HOME
 git clone -b master https://github.com/CachyOS/linux-cachyos
 cd linux-cachyos/linux-cachyos
