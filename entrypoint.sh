@@ -6,7 +6,8 @@ cd $HOME
 git clone -b master https://github.com/CachyOS/linux-cachyos
 cd linux-cachyos/linux-cachyos
 echo "Compiling kernel..."
-env _processor_opt="sandybridge" \
+env KBUILD_BUILD_TIMESTAMP='' \
+    _processor_opt="sandybridge" \
     _disable_debug=y \
     _NUMAdisable=y \
     _nr_cpus=4 \
