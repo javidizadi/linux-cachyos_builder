@@ -2,14 +2,12 @@
 set -e
 export PATH="/usr/lib/ccache/bin:$PATH"
 sudo chmod -R a+rw $HOME/.cache/ccache
-echo "test" > $HOME/.cache/ccache/test
-exit 0
 cd $HOME
 git clone -b master https://github.com/CachyOS/linux-cachyos
 cd linux-cachyos/linux-cachyos
 echo "Compiling kernel..."
-env KBUILD_BUILD_TIMESTAMP='' \
-    _processor_opt="sandybridge" \
+KBUILD_BUILD_TIMESTAMP='' \
+    env _processor_opt="sandybridge" \
     _disable_debug=y \
     _NUMAdisable=y \
     _nr_cpus=4 \
