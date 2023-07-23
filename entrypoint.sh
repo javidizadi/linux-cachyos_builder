@@ -1,17 +1,20 @@
 #!/bin/bash
 set -e
-cd /home/linux-cachyos_builder
+export PATH="/usr/lib/ccache/bin:$PATH"
+sudo chmod -R a+rw $HOME/.cache/ccache
+cd $HOME
 git clone -b master https://github.com/CachyOS/linux-cachyos
 cd linux-cachyos/linux-cachyos
 echo "Compiling kernel..."
+KBUILD_BUILD_TIMESTAMP='' \
 env _processor_opt="sandybridge" \
-    _disable_debug=y \
-    _NUMAdisable=y \
-    _nr_cpus=4 \
-    _use_auto_optimization='' \
-    _localmodcfg=y \
-    _cc_harder=y \
-    makepkg
+_disable_debug=y \
+_NUMAdisable=y \
+_nr_cpus=4 \
+_use_auto_optimization='' \
+_localmodcfg=y \
+_cc_harder=y \
+makepkg -s --noconfirm
 echo "Logining in to GitHub..."
 printenv GITHUB_KEY | gh auth login --with-token
 minor=$(grep _minor PKGBUILD | head -1 | cut -c 8-)
@@ -20,6 +23,7 @@ pkgrel=$(grep pkgrel PKGBUILD | head -1 | cut -c 8-)
 version="$major.$minor-$pkgrel"
 repo=$(printenv REPO)
 echo "Checking for same release..."
+set +e
 gh release view "$version" --repo "$repo"
 tag_exists=$?
 if test $tag_exists -eq 0; then
@@ -27,6 +31,7 @@ if test $tag_exists -eq 0; then
     echo "Removing previous release..."
     gh release delete "$version" -y --cleanup-tag --repo "$repo"
 fi
+set -e
 echo "Releasing $version binaries into $repo"
 gh release create "$version" ./*.pkg.tar.zst --repo "$repo"
 echo "Released!"
