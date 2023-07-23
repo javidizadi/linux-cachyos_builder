@@ -1,6 +1,6 @@
 name: builder
 
-on: 
+on:
   workflow_dispatch:
 
 jobs:
@@ -23,4 +23,4 @@ jobs:
         run: docker build . --file Dockerfile --tag ${{ github.repository }}:latest
 
       - name: run Docker image
-        run: docker run -i -e GITHUB_KEY=${{ secrets.GITHUB_TOKEN }} -e REPO=${{ github.repository }} -v "$(pwd)"/cache:/home/builder/.cache/ccache:Z  ${{ github.repository }}:latest
+        run: docker run -i -e GITHUB_KEY=${{ secrets.GITHUB_TOKEN }} -e REPO=${{ github.repository }} -v "$(realpath ./cache)":/home/builder/.cache/ccache:Z  ${{ github.repository }}:latest
