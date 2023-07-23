@@ -23,9 +23,3 @@ jobs:
 
       - name: run Docker image
         run: docker run -i -e GITHUB_KEY=${{ secrets.GITHUB_TOKEN }} -e REPO=${{ github.repository }} -v "$(pwd)"/cache:/home/builder/.cache/ccache:Z  ${{ github.repository }}:latest
-
-      #test
-      - name: show cache
-        run: |
-          ls -ltrh ./cache
-          du -sh ./cache
