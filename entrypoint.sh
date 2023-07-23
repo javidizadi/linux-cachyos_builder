@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 export PATH="/usr/lib/ccache/bin:$PATH"
-sudo chown -hR "${USER}" "${HOME}/.cache/ccache"
+#sudo chown -hR "${USER}" "${HOME}/.cache/ccache"
+sudo usermod -aG "123" javid
+groups
 ls -ltrh $HOME/.cache
 echo "test" > $HOME/.cache/ccache/test
 cat $HOME/.cache/ccache/test
