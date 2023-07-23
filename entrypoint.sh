@@ -24,13 +24,13 @@ repo=$(printenv REPO)
 echo "Checking for same release..."
 set +e
 gh release view "$version" --repo "$repo"
-set -e
 tag_exists=$?
 if test $tag_exists -eq 0; then
     echo "Tag already exists!"
     echo "Removing previous release..."
     gh release delete "$version" -y --cleanup-tag --repo "$repo"
 fi
+set -e
 echo "Releasing $version binaries into $repo"
 gh release create "$version" ./*.pkg.tar.zst --repo "$repo"
 echo "Released!"
